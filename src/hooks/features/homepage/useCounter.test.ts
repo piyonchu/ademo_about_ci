@@ -9,21 +9,26 @@ describe('useCounter', () => {
   });
 
   it('should increment the count by the current value of val', () => {
-    const { result } = renderHook(() => useCounter());
+  const { result } = renderHook(() => useCounter());
 
-    act(() => {
-      result.current.increment();
-    });
-
-    expect(result.current.count).toBe(1);
-
-    act(() => {
-      result.current.setVal(5);
-      result.current.increment();
-    });
-
-    expect(result.current.count).toBe(6);
+  act(() => {
+    result.current.increment(); // val is 1
   });
+
+  expect(result.current.count).toBe(1);
+
+  act(() => {
+    result.current.setVal(5);
+  });
+
+  // wait for val to update before calling increment
+  act(() => {
+    result.current.increment();
+  });
+
+  expect(result.current.count).toBe(6);
+});
+
 
   it('should update val correctly', () => {
     const { result } = renderHook(() => useCounter());
